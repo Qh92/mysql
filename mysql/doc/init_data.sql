@@ -196,6 +196,9 @@ insert into test03(c1,c2,c3,c4,c5) values ('e1','e2','e3','e4','e5');
 create index idx_test03_c1234 on test03(c1,c2,c3,c4);
 
 
+https://blog.csdn.net/m0_46332820/article/details/119708248
+
+
 
 
 
