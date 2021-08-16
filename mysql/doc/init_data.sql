@@ -198,6 +198,13 @@ create index idx_test03_c1234 on test03(c1,c2,c3,c4);
 
 https://blog.csdn.net/m0_46332820/article/details/119708248
 
+git credential-manager uninstall
+--删掉github的凭据
+
+git config --global --unset http.proxy
+
+git config --global --unset https.proxy
+
 
 
 
