@@ -197,7 +197,7 @@ create index idx_test03_c1234 on test03(c1,c2,c3,c4);
 
 
 
---Mysql order by优化
+#Mysql order by优化
 create table tblA(
 id int primary key not null auto_increment,
 age int,
@@ -213,11 +213,11 @@ create index idx_A_ageBirth on tblA(age, birth);
 select * from tblA;
 
 
---大数据测试
+#大数据测试
 create database big_data;
 use big_data;
 
---建表
+#建表
 create table dept(
 id int unsigned primary key auto_increment,
 deptno mediumint unsigned not null default 0,
@@ -225,7 +225,7 @@ dname varchar(20) not null default '',
 loc varchar(13) not null default ''
 ) engine=innodb default charset=gbk;
 
-drop table emp;
+#drop table emp;
 create table emp(
 id int unsigned primary key auto_increment,
 empno mediumint unsigned not null default 0,/*编号*/
@@ -239,7 +239,11 @@ deptno mediumint unsigned not null default 0 /*部门编号*/
 ) engine=innodb default charset=gbk;
 
 
---创建函数
+#创建函数
+#首先设置如下参数
+show variables like 'log_bin_trust_function_creators';
+set global log_bin_trust_function_creators = 1;
+
 delimiter $$
 create function rand_string(n int) returns varchar(255)
 begin
@@ -262,7 +266,7 @@ set i = floor(100 + rand() * 10);
 return i;
 end $$;
 
---创建存储过程
+#创建存储过程
 delimiter $$
 create procedure insert_emp(in start int(10),in max_num int(10))
 begin
