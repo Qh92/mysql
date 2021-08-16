@@ -196,14 +196,114 @@ insert into test03(c1,c2,c3,c4,c5) values ('e1','e2','e3','e4','e5');
 create index idx_test03_c1234 on test03(c1,c2,c3,c4);
 
 
-https://blog.csdn.net/m0_46332820/article/details/119708248
 
-git credential-manager uninstall
---删掉github的凭据
+--Mysql order by优化
+create table tblA(
+id int primary key not null auto_increment,
+age int,
+birth timestamp not null
+);
 
-git config --global --unset http.proxy
+insert into tblA(age, birth) values(22, now());
+insert into tblA(age, birth) values(23, now());
+insert into tblA(age, birth) values(24, now());
 
-git config --global --unset https.proxy
+create index idx_A_ageBirth on tblA(age, birth);
+
+select * from tblA;
+
+
+--大数据测试
+create database big_data;
+use big_data;
+
+--建表
+create table dept(
+id int unsigned primary key auto_increment,
+deptno mediumint unsigned not null default 0,
+dname varchar(20) not null default '',
+loc varchar(13) not null default ''
+) engine=innodb default charset=gbk;
+
+drop table emp;
+create table emp(
+id int unsigned primary key auto_increment,
+empno mediumint unsigned not null default 0,/*编号*/
+ename varchar(20) not null default '',/*名字*/
+job varchar(9) not null default '',/*工作*/
+mgr mediumint unsigned not null default 0,/*上级编号*/
+hiredate date not null,/*入职时间*/
+sal decimal(7,2) not null,/*薪水*/
+comm decimal(7,2) not null,/*红利*/
+deptno mediumint unsigned not null default 0 /*部门编号*/
+) engine=innodb default charset=gbk;
+
+
+--创建函数
+delimiter $$
+create function rand_string(n int) returns varchar(255)
+begin
+declare chars_str varchar(100) default 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+declare return_str varchar(255) default '';
+declare i int default 0;
+while i < n do
+set return_str = concat(return_str,substring(chars_str,floor(1+rand() * 52),1));
+set i = i + 1;
+end while;
+return return_str;
+end $$
+
+
+delimiter $$
+create function rand_num() returns int(5)
+begin
+declare i int default 0;
+set i = floor(100 + rand() * 10);
+return i;
+end $$;
+
+--创建存储过程
+delimiter $$
+create procedure insert_emp(in start int(10),in max_num int(10))
+begin
+declare i int default 0;
+#set autocommit=0把autocommit设置为0
+set autocommit = 0;
+repeat
+set i = i + 1;
+insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno) values((start +i),rand_string(6),'SALESMAN',0001,CURDATE(),2000,400,rand_num());
+until i = max_num
+end repeat;
+commit;
+end $$
+
+delimiter $$
+create procedure insert_dept(in start int(10),in max_num int(10))
+begin
+declare i int default 0;
+#set autocommit=0把autocommit设置为0
+set autocommit = 0;
+repeat
+set i = i + 1;
+insert into dept(deptno,dname,loc) values((start +i),rand_string(10),rand_string(8));
+until i = max_num
+end repeat;
+commit;
+end $$
+
+create table mylock (
+id int primary key auto_increment,
+name varchar(20) default ''
+) engine myisam;
+
+insert into mylock(name) values('a');
+insert into mylock(name) values('b');
+insert into mylock(name) values('c');
+insert into mylock(name) values('d');
+insert into mylock(name) values('e');
+
+select * from mylock;
+
 
 
 
