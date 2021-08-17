@@ -295,6 +295,8 @@ end repeat;
 commit;
 end $$
 
+#锁
+#表锁
 create table mylock (
 id int primary key auto_increment,
 name varchar(20) default ''
@@ -308,6 +310,19 @@ insert into mylock(name) values('e');
 
 select * from mylock;
 
+#行锁
+create table test_innodb_lock(a int(11),b varchar(16))engine=innodb;
+insert into test_innodb_lock values(1,'b2');
+insert into test_innodb_lock values(1,'b1');
+insert into test_innodb_lock values(3,'3');
+insert into test_innodb_lock values(4,'4000');
+insert into test_innodb_lock values(5,'5000');
+insert into test_innodb_lock values(6,'6000');
+insert into test_innodb_lock values(7,'7000');
+insert into test_innodb_lock values(8,'8000');
+insert into test_innodb_lock values(9,'9000');
+create index test_innodb_a_ind on test_innodb_lock(a);
+create index test_innodb_lock_b_ind on test_innodb_lock(b);
 
 
 
